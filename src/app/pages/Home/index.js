@@ -26,6 +26,17 @@ class Home extends React.Component {
   //     .catch(() => this.setState({ error: "Something went wrong" }));
   // }
 
+  toggleFavorite = id => {
+    this.setState(state => ({
+      cities: state.cities.map(city => {
+        if (city.id === id) {
+          return { ...city, isFavorite: !city.isFavorite };
+        }
+        return city;
+      })
+    }));
+  };
+
   render() {
     const countries = [
       {
@@ -49,19 +60,23 @@ class Home extends React.Component {
     const cities = [
       {
         name: "Vilnius",
-        temperature: 1
+        temperature: 1,
+        isFavorite: false
       },
       {
         name: "Kaunas",
-        temperature: 2
+        temperature: 2,
+        isFavorite: false
       },
       {
         name: "Siauliai",
-        temperature: 3
+        temperature: 3,
+        isFavorite: false
       },
       {
         name: "Varena",
-        temperature: 4
+        temperature: 4,
+        isFavorite: false
       }
     ];
 
@@ -74,11 +89,7 @@ class Home extends React.Component {
         <div className="home--map">MAP</div>
         <div className="home--cities">
           {cities.map(city => (
-            <CityCard
-              {...city}
-              // toggleFavorite={toggleFavorite}
-              // updateCartCount={updateCartCount}
-            />
+            <CityCard {...city} toggleFavorite={this.toggleFavorite} />
           ))}
         </div>
       </div>

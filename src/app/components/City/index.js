@@ -8,16 +8,15 @@ function CityCard({ name, temperature, toggleFavorite, isFavorite }) {
       <p>City: {name}</p>
       <p>Temperature: {temperature}</p>
       <p>
-        {/* <button type="button" onClick={() => toggleFavorite(name)}>
+        <button type="button" onClick={() => toggleFavorite(name)}>
           {isFavorite ? "💔" : "💖"}
-        </button> */}
+        </button>
       </p>
     </div>
   );
 }
 
 CityCard.propTypes = {
-  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   temperature: PropTypes.number.isRequired,
   isFavorite: PropTypes.string.isRequired,
