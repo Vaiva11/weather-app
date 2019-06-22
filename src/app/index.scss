@@ -1,0 +1,19 @@
+body {
+  margin: 0 auto;
+  
+  .AppLayout {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+
+    main {
+      display: flex;
+      flex-grow: 1;
+    }
+
+    ul {
+      padding: 0;
+    }
+  }
+}

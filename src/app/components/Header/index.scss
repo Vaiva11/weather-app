@@ -1,0 +1,50 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  height: 15vh;
+  background-color: #6491b6;
+
+  ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    width: 100vw;
+    justify-content: center;
+
+    li {
+      margin: 0 20px 0 20px;
+      font-size: 1.5rem;
+      color: rgb(255, 255, 255);
+
+      a{
+        text-decoration: none;
+        transition: color 0.2s linear;
+        color: rgb(255, 255, 255);
+        font-weight: bold;
+        position: relative;
+      
+
+        &.active {
+          &::after {
+            width: 100%;
+          }
+        }
+      }
+
+      a:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        border-bottom: 3px solid rgb(255, 255, 255);
+        transition: 0.4s;
+      }
+      a:hover:after {
+        width: 100%;
+      }
+
+    }
+  }
+}
