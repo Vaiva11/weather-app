@@ -1,10 +1,19 @@
-import React from 'react';
-import './index.scss';
+import React from "react";
+import "./index.scss";
+import { CityCard } from "../../components";
 
-function Favorites() {
+function Favorites({ cities, toggleFavorite }) {
   return (
-    <React.Fragment><h1>Favorites</h1></React.Fragment>
-  )
+    <div className="favorites">
+      {cities.map(city => (
+        <CityCard {...city} toggleFavorite={toggleFavorite} />
+      ))}
+    </div>
+  );
 }
+
+Favorites.defaultProps = {
+  cities: []
+};
 
 export default Favorites;
