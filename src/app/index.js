@@ -30,7 +30,8 @@ class App extends React.Component {
           isFavorite: false
         }
       ],
-      error: null
+      error: null,
+      favCities: []
     };
   }
 
@@ -59,20 +60,27 @@ class App extends React.Component {
     }));
   };
 
+  componentDidMount() {
+    this.setState(() => {
+      return { favCities: JSON.parse(localStorage.getItem("myCities")) };
+    });
+    //this.favCities = JSON.parse(localStorage.getItem("myCities"));
+    console.log("components did mount" + this.favCities);
+  }
+
   renderHome = () => {
     const { cities } = this.state;
 
+    this.favCities = cities.filter(city => city.isFavorite);
+
+    localStorage.setItem("myCities", JSON.stringify(this.favCities));
     return <Home cities={cities} toggleFavorite={this.toggleFavorite} />;
   };
 
   renderFavorites = () => {
-    const { cities } = this.state;
-
+    const { favCities } = this.state;
     return (
-      <Favorites
-        cities={cities.filter(city => city.isFavorite)}
-        toggleFavorite={this.toggleFavorite}
-      />
+      <Favorites cities={favCities} toggleFavorite={this.toggleFavorite} />
     );
   };
 

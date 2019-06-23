@@ -1,19 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
+
 function CityCard({ name, temperature, toggleFavorite, isFavorite }) {
-  let favorites = [];
   return (
     <div className="cityCard">
       <p>City: {name}</p>
       <p>Temperature: {temperature}</p>
       <p>
         <button type="button" onClick={() => toggleFavorite(name)}>
-          {isFavorite
-            ? favorites.push(name) + "💔"
-            : favorites.splice(0, 1) + "💖"}
-          {localStorage.setItem("myCities", '["aaa", "bbb"]')}
-          {console.log('["aaa", "bbb"]')}
+          {isFavorite ? "💔" : "💖"}
         </button>
       </p>
     </div>
