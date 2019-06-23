@@ -61,7 +61,6 @@ class App extends React.Component {
 
   renderHome = () => {
     const { cities } = this.state;
-    //localStorage.setItem("myData", cities.filter(city => city.isFavorite));
 
     return <Home cities={cities} toggleFavorite={this.toggleFavorite} />;
   };
