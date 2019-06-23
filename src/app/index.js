@@ -60,20 +60,16 @@ class App extends React.Component {
     }));
   };
 
-  componentDidMount() {
-    this.setState(() => {
-      return { favCities: JSON.parse(localStorage.getItem("myCities")) };
-    });
-    //this.favCities = JSON.parse(localStorage.getItem("myCities"));
-    console.log("components did mount" + this.favCities);
+  componentWillUpdate(nextProps, nextState) {
+    localStorage.setItem(
+      "myCitiess",
+      JSON.stringify(nextState.cities.filter(city => city.isFavorite))
+    );
   }
 
   renderHome = () => {
     const { cities } = this.state;
-
-    this.favCities = cities.filter(city => city.isFavorite);
-
-    localStorage.setItem("myCities", JSON.stringify(this.favCities));
+    //this.favCities = cities.filter(city => city.isFavorite);
     return <Home cities={cities} toggleFavorite={this.toggleFavorite} />;
   };
 
