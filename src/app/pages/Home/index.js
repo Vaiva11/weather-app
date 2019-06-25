@@ -23,6 +23,14 @@ function Home({ cities, toggleFavorite }) {
     }
   ];
 
+  const cards = [];
+  Object.keys(cities).forEach(key => {
+    let value = cities[key];
+    cards.push(
+      <CityCard name={key} {...value} toggleFavorite={toggleFavorite} />
+    );
+  });
+
   return (
     <div className="home">
       <div className="home--list">
@@ -30,17 +38,13 @@ function Home({ cities, toggleFavorite }) {
         <Select options={countries} className="selector" />
       </div>
       <div className="home--map">MAP</div>
-      <div className="home--cities">
-        {cities.map(city => (
-          <CityCard {...city} toggleFavorite={toggleFavorite} />
-        ))}
-      </div>
+      <div className="home--cities">{cards}</div>
     </div>
   );
 }
 
 Home.defaultProps = {
-  cities: []
+  cities: {}
 };
 
 export default Home;

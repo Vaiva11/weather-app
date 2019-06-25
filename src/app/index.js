@@ -8,30 +8,25 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cities: [
-        {
-          name: "Vilnius",
+      cities: {
+        Vilnius: {
           temperature: 1,
           isFavorite: false
         },
-        {
-          name: "Kaunas",
+        Kaunas: {
           temperature: 2,
           isFavorite: false
         },
-        {
-          name: "Siauliai",
+        Siauliai: {
           temperature: 3,
           isFavorite: false
         },
-        {
-          name: "Varena",
+        Varena: {
           temperature: 4,
           isFavorite: false
         }
-      ],
-      error: null,
-      favCities: []
+      },
+      error: null
     };
   }
 
@@ -50,34 +45,59 @@ class App extends React.Component {
   // }
 
   toggleFavorite = name => {
-    this.setState(state => ({
-      cities: state.cities.map(city => {
-        if (city.name === name) {
-          return { ...city, isFavorite: !city.isFavorite };
-        }
-        return city;
-      })
-    }));
+    let st = this.state;
+    let city = st.cities[name];
+
+    if (city) {
+      city.isFavorite = !city.isFavorite;
+    }
+
+    this.setState(st);
   };
 
   componentWillUpdate(nextProps, nextState) {
-    localStorage.setItem(
-      "myCitiess",
-      JSON.stringify(nextState.cities.filter(city => city.isFavorite))
-    );
+    let favCities = [];
+    Object.keys(this.state.cities).forEach(key => {
+      let value = this.state.cities[key];
+
+      if (value.isFavorite) {
+        favCities.push(key);
+      }
+    });
+
+    localStorage.setItem("favCities", JSON.stringify(favCities));
+  }
+
+  componentDidMount() {
+    let data = localStorage.getItem("favCities");
+    let favCities = data ? JSON.parse(data) : [];
+
+    let st = this.state;
+
+    Object.keys(st.cities).forEach(key => {
+      st.cities[key].isFavorite = false;
+    });
+
+    favCities.map(key => {
+      let data = st.cities[key];
+      if (data) {
+        data.isFavorite = true;
+      }
+    });
+
+    this.setState(st);
   }
 
   renderHome = () => {
     const { cities } = this.state;
-    //this.favCities = cities.filter(city => city.isFavorite);
+
     return <Home cities={cities} toggleFavorite={this.toggleFavorite} />;
   };
 
   renderFavorites = () => {
-    const { favCities } = this.state;
-    return (
-      <Favorites cities={favCities} toggleFavorite={this.toggleFavorite} />
-    );
+    const { cities } = this.state;
+
+    return <Favorites cities={cities} toggleFavorite={this.toggleFavorite} />;
   };
 
   render() {

@@ -20,8 +20,7 @@ CityCard.propTypes = {
   name: PropTypes.string.isRequired,
   temperature: PropTypes.number.isRequired,
   isFavorite: PropTypes.string.isRequired,
-  toggleFavorite: PropTypes.func.isRequired,
-  updateCartCount: PropTypes.func.isRequired
+  toggleFavorite: PropTypes.func.isRequired
 };
 
 export default CityCard;
