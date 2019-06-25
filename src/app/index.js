@@ -26,23 +26,45 @@ class App extends React.Component {
           isFavorite: false
         }
       },
+      countries: [],
       error: null
     };
   }
 
-  // componentDidMount() {
-  //   fetch(
-  //     "api.openweathermap.org/data/2.5/weather?q={city name},{country code}"
-  //   )
-  //     .then(response => response.json())
-  //     .then(json => {
-  //       const cities = json.map(cities => ({
-  //         ...cities
-  //       }));
-  //       this.setState({ cities });
-  //     })
-  //     .catch(() => this.setState({ error: "Something went wrong" }));
-  // }
+  componentDidMount() {
+    fetch("http://api.geonames.org/countryInfoJSON?username=spidee")
+      .then(response => response.json())
+      .then(json => {
+        let countries = {};
+        json["geonames"].forEach(country => {
+          countries[country["countryName"]] = country["countryCode"];
+        });
+
+        this.setState({ countries });
+        //console.log(Object.keys(this.state.countries));
+      })
+      .catch(() => this.setState({ error: "Something went wrong" }));
+
+    //getting from localStorage
+
+    let data = localStorage.getItem("favCities");
+    let favCities = data ? JSON.parse(data) : [];
+
+    let st = this.state;
+
+    Object.keys(st.cities).forEach(key => {
+      st.cities[key].isFavorite = false;
+    });
+
+    favCities.map(key => {
+      let data = st.cities[key];
+      if (data) {
+        data.isFavorite = true;
+      }
+    });
+
+    this.setState(st);
+  }
 
   toggleFavorite = name => {
     let st = this.state;
@@ -68,7 +90,7 @@ class App extends React.Component {
     localStorage.setItem("favCities", JSON.stringify(favCities));
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     let data = localStorage.getItem("favCities");
     let favCities = data ? JSON.parse(data) : [];
 
@@ -86,12 +108,19 @@ class App extends React.Component {
     });
 
     this.setState(st);
-  }
+  }*/
 
   renderHome = () => {
     const { cities } = this.state;
+    const { countries } = this.state;
 
-    return <Home cities={cities} toggleFavorite={this.toggleFavorite} />;
+    return (
+      <Home
+        cities={cities}
+        toggleFavorite={this.toggleFavorite}
+        countries={countries}
+      />
+    );
   };
 
   renderFavorites = () => {

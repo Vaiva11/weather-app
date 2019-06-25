@@ -19,7 +19,7 @@ function CityCard({ name, temperature, toggleFavorite, isFavorite }) {
 CityCard.propTypes = {
   name: PropTypes.string.isRequired,
   temperature: PropTypes.number.isRequired,
-  isFavorite: PropTypes.string.isRequired,
+  isFavorite: PropTypes.bool.isRequired,
   toggleFavorite: PropTypes.func.isRequired
 };
 
