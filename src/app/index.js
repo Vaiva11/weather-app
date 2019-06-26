@@ -11,10 +11,12 @@ class App extends React.Component {
       countries: [],
       error: null,
       selectedOption: null,
-      cities: {}
+      cities: {},
+      isLoaded: false
     };
   }
 
+  //getting countries and setting localStorage
   componentDidMount() {
     //getting countries
     fetch("http://api.geonames.org/countryInfoJSON?username=spidee")
@@ -30,7 +32,11 @@ class App extends React.Component {
       .catch(() => this.setState({ error: "Something went wrong" }));
 
     //getting from localStorage
-    let data = localStorage.getItem("favCities");
+
+    let data = "";
+    if (this.state.isLoaded) {
+      data = localStorage.getItem("favCities");
+    }
     let favCities = data ? JSON.parse(data) : [];
 
     let st = this.state;
@@ -74,9 +80,11 @@ class App extends React.Component {
     localStorage.setItem("favCities", JSON.stringify(favCities));
   }
 
+  //getting cities
   callbackFunction = childData => {
     this.setState({ selectedOption: childData });
 
+    //fetch cities
     fetch(
       `http://api.geonames.org/searchJSON?username=spidee&country=${
         childData.value
@@ -85,6 +93,8 @@ class App extends React.Component {
       .then(response => response.json())
       .then(json => {
         let cities = {};
+        let tempLinks = [];
+        this.setState({ isLoaded: true });
         json["geonames"].forEach(city => {
           if (
             city.fcode === "PPL" ||
@@ -100,18 +110,31 @@ class App extends React.Component {
               lat: city["lat"],
               isFavorite: false
             };
+
+            tempLinks.push(
+              `api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${
+                city.lng
+              }&appid=48e0a2181dd86eda5cce3dccb60d7805`
+            );
           }
         });
 
         this.setState({ cities });
+
+        const promises = link =>
+          fetch(link)
+            .then(res => res.text())
+            .then(res => console.log(res))
+            .catch(res => console.log(res));
+
+        return Promise.all(tempLinks.map(promises));
       })
-      .catch(() => this.setState({ error: "Something went wrong" }));
+      .catch(res => console.log(res));
   };
 
   renderHome = () => {
     const { cities } = this.state;
     const { countries } = this.state;
-    console.log(cities);
 
     return (
       <Home
