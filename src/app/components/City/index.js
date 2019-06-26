@@ -2,11 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 
-function CityCard({ name, temperature, toggleFavorite, isFavorite }) {
+function CityCard({ name, toggleFavorite, isFavorite }) {
   return (
     <div className="cityCard">
       <p>City: {name}</p>
-      <p>Temperature: {temperature}</p>
       <p>
         <button type="button" onClick={() => toggleFavorite(name)}>
           {isFavorite ? "💔" : "💖"}

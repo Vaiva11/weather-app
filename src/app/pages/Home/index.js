@@ -3,37 +3,68 @@ import "./index.scss";
 import Select from "react-select";
 import { CityCard } from "../../components";
 
-function Home({ cities, toggleFavorite, countries }) {
-  const cards = [];
-  let countriesOptions = [];
+class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cities: {},
+      countries: [],
+      toggleFavorite: false,
+      selectedOption: null
+    };
+  }
 
-  //makes select countries
-  Object.keys(countries).forEach((i, index) => {
-    countriesOptions.push({ label: i, value: Object.values(countries)[index] });
-  });
+  handleChange = selectedOption => {
+    this.setState({ selectedOption });
+    this.props.parentCallback(selectedOption);
+  };
 
-  //makes cities
-  Object.keys(cities).forEach(key => {
-    let value = cities[key];
-    cards.push(
-      <CityCard name={key} {...value} toggleFavorite={toggleFavorite} />
-    );
-  });
+  render = () => {
+    const { countries } = this.props;
+    const { cities } = this.props;
+    const { toggleFavorite } = this.props;
 
-  return (
-    <div className="home">
-      <div className="home--list">
-        <h1>Choose country</h1>
-        <Select options={countriesOptions} className="selector" />
+    const { selectedOption } = this.state;
+
+    const cards = [];
+    let countriesOptions = [];
+
+    //makes select countries
+    Object.keys(countries).forEach((i, index) => {
+      countriesOptions.push({
+        label: i,
+        value: Object.values(countries)[index]
+      });
+    });
+
+    //makes cities
+    Object.keys(cities).forEach(key => {
+      let value = cities[key];
+      cards.push(
+        <CityCard name={key} {...value} toggleFavorite={toggleFavorite} />
+      );
+    });
+
+    //makes list alphabetic
+    countriesOptions.sort((a, b) => (a.label > b.label ? 1 : -1));
+
+    //rendering
+    return (
+      <div className="home">
+        <div className="home--list">
+          <h1>Choose country</h1>
+          <Select
+            options={countriesOptions.sort()}
+            value={selectedOption}
+            onChange={this.handleChange}
+            className="selector"
+          />
+        </div>
+        <div className="home--map">MAP</div>
+        <div className="home--cities">{cards}</div>
       </div>
-      <div className="home--map">MAP</div>
-      <div className="home--cities">{cards}</div>
-    </div>
-  );
+    );
+  };
 }
-
-Home.defaultProps = {
-  cities: {}
-};
 
 export default Home;

@@ -8,30 +8,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cities: {
-        Vilnius: {
-          temperature: 1,
-          isFavorite: false
-        },
-        Kaunas: {
-          temperature: 2,
-          isFavorite: false
-        },
-        Siauliai: {
-          temperature: 3,
-          isFavorite: false
-        },
-        Varena: {
-          temperature: 4,
-          isFavorite: false
-        }
-      },
       countries: [],
-      error: null
+      error: null,
+      selectedOption: null,
+      cities: {}
     };
   }
 
   componentDidMount() {
+    //getting countries
     fetch("http://api.geonames.org/countryInfoJSON?username=spidee")
       .then(response => response.json())
       .then(json => {
@@ -41,12 +26,10 @@ class App extends React.Component {
         });
 
         this.setState({ countries });
-        //console.log(Object.keys(this.state.countries));
       })
       .catch(() => this.setState({ error: "Something went wrong" }));
 
     //getting from localStorage
-
     let data = localStorage.getItem("favCities");
     let favCities = data ? JSON.parse(data) : [];
 
@@ -77,6 +60,7 @@ class App extends React.Component {
     this.setState(st);
   };
 
+  //setting localStorage
   componentWillUpdate(nextProps, nextState) {
     let favCities = [];
     Object.keys(this.state.cities).forEach(key => {
@@ -90,35 +74,51 @@ class App extends React.Component {
     localStorage.setItem("favCities", JSON.stringify(favCities));
   }
 
-  /*componentDidMount() {
-    let data = localStorage.getItem("favCities");
-    let favCities = data ? JSON.parse(data) : [];
+  callbackFunction = childData => {
+    this.setState({ selectedOption: childData });
 
-    let st = this.state;
+    fetch(
+      `http://api.geonames.org/searchJSON?username=spidee&country=${
+        childData.value
+      }&style=SHORT`
+    )
+      .then(response => response.json())
+      .then(json => {
+        let cities = {};
+        json["geonames"].forEach(city => {
+          if (
+            city.fcode === "PPL" ||
+            city.fcode === "PPLA" ||
+            city.fcode === "PPLA2" ||
+            city.fcode === "PPLA3" ||
+            city.fcode === "PPLA4" ||
+            city.fcode === "PPLC"
+          ) {
+            cities[city["name"]] = {
+              countryCode: city["countryCode"],
+              lng: city["lng"],
+              lat: city["lat"],
+              isFavorite: false
+            };
+          }
+        });
 
-    Object.keys(st.cities).forEach(key => {
-      st.cities[key].isFavorite = false;
-    });
-
-    favCities.map(key => {
-      let data = st.cities[key];
-      if (data) {
-        data.isFavorite = true;
-      }
-    });
-
-    this.setState(st);
-  }*/
+        this.setState({ cities });
+      })
+      .catch(() => this.setState({ error: "Something went wrong" }));
+  };
 
   renderHome = () => {
     const { cities } = this.state;
     const { countries } = this.state;
+    console.log(cities);
 
     return (
       <Home
         cities={cities}
         toggleFavorite={this.toggleFavorite}
         countries={countries}
+        parentCallback={this.callbackFunction}
       />
     );
   };
