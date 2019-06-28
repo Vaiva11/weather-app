@@ -10,7 +10,7 @@ class App extends React.Component {
     this.state = {
       countries: [],
       error: null,
-      selectedOption: null,
+      selectedOption: "",
       cities: {},
       favCities: []
     };
@@ -104,7 +104,7 @@ class App extends React.Component {
               `http://api.openweathermap.org/data/2.5/weather?lat=${
                 city.lat
               }&lon=${city.lng}&appid=48e0a2181dd86eda5cce3dccb60d7805`
-            );
+            ); //klp
           }
         });
 
@@ -120,12 +120,7 @@ class App extends React.Component {
               this.setState({ cities }); //kur geresne vieta?
             })
             .catch(notFound => {
-              console.log("not found");
-              Object.assign(cities[notFound.name], {
-                //not working
-                temperature: "not found",
-                icon: "not found"
-              });
+              this.setState({ error: notFound });
             });
 
         return Promise.all(tempLinks.map(promises));

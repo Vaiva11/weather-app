@@ -4,6 +4,7 @@ import "./index.scss";
 
 function CityCard({ name, icon, temperature, toggleFavorite, isFavorite }) {
   let iconImg = "";
+  let tempImg = temperature ? temperature : "―";
 
   if (icon !== undefined) {
     switch (icon) {
@@ -46,13 +47,15 @@ function CityCard({ name, icon, temperature, toggleFavorite, isFavorite }) {
       default:
         iconImg = "";
     }
+  } else {
+    iconImg = "―";
   }
 
   return (
     <div className="cityCard">
       <p>{name}</p>
       <p>{iconImg}</p>
-      <p>{temperature}</p>
+      <p>{tempImg}</p>
       <p>
         <button
           type="button"
