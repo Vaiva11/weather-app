@@ -83,7 +83,7 @@ class App extends React.Component {
       .then(json => {
         let cities = {};
         let tempLinks = [];
-        json["geonames"].forEach(city => {
+        json.geonames.forEach(city => {
           if (
             city.fcode === "PPL" ||
             city.fcode === "PPLA" ||
@@ -92,10 +92,10 @@ class App extends React.Component {
             city.fcode === "PPLA4" ||
             city.fcode === "PPLC"
           ) {
-            cities[city["name"]] = {
-              countryCode: city["countryCode"],
-              lng: city["lng"],
-              lat: city["lat"],
+            cities[city.name] = {
+              countryCode: city.countryCode,
+              lng: city.lng,
+              lat: city.lat,
               isFavorite: false
             };
 
@@ -108,18 +108,30 @@ class App extends React.Component {
           }
         });
 
-        this.setState({ cities });
-
         const promises = link =>
           fetch(link)
             .then(res => res.json())
-            .then(res => console.log(res.main.temp))
-            .catch(res => console.log(res));
+            .then(res => {
+              Object.assign(cities[res.name], {
+                temperature: Math.round(res.main.temp - 273) + "°C",
+                icon: res.weather[0].icon
+              });
+
+              this.setState({ cities }); //kur geresne vieta?
+            })
+            .catch(notFound => {
+              console.log("not found");
+              Object.assign(cities[notFound.name], {
+                //not working
+                temperature: "not found",
+                icon: "not found"
+              });
+            });
 
         return Promise.all(tempLinks.map(promises));
       })
-      .then(res => console.log("done"))
-      .catch(res => console.log(res));
+      .then(res => console.log("good"))
+      .catch(res => console.log("error"));
   };
 
   renderHome = () => {
