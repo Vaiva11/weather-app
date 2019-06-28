@@ -20,10 +20,7 @@ class Home extends React.Component {
   };
 
   render = () => {
-    const { countries } = this.props;
-    const { cities } = this.props;
-    const { toggleFavorite } = this.props;
-
+    const { countries, cities, toggleFavorite, favCities } = this.props;
     const { selectedOption } = this.state;
 
     const cards = [];
@@ -40,13 +37,43 @@ class Home extends React.Component {
     //makes cities
     Object.keys(cities).forEach(key => {
       let value = cities[key];
+
+      let isFavorite = false;
+      for (let index = 0; index < favCities.length; index++) {
+        if (
+          favCities[index].name === key &&
+          favCities[index].countryCode === value.countryCode
+        ) {
+          isFavorite = true;
+          break;
+        }
+      }
+
       cards.push(
-        <CityCard name={key} {...value} toggleFavorite={toggleFavorite} />
+        <CityCard
+          key={key} //kas nebutu error
+          name={key}
+          {...value}
+          isFavorite={isFavorite}
+          toggleFavorite={toggleFavorite}
+        />
       );
     });
 
     //makes list alphabetic
     countriesOptions.sort((a, b) => (a.label > b.label ? 1 : -1));
+
+    const nameList =
+      cards.length !== 0 ? (
+        <div className="home--name">
+          <p>City</p>
+          <p>Weather</p>
+          <p>Celsius</p>
+          <p>Add to favorites</p>
+        </div>
+      ) : (
+        <span />
+      );
 
     //rendering
     return (
@@ -61,7 +88,8 @@ class Home extends React.Component {
           />
         </div>
         <div className="home--map">MAP</div>
-        <div className="home--cities">{cards}</div>
+        {nameList}
+        <div className="home--item">{cards}</div>
       </div>
     );
   };

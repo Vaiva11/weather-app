@@ -7,7 +7,6 @@
   justify-content: center;
   align-items: center;
 
-
   &--list {
     width: 80%;
     background-color: bisque;
@@ -39,5 +38,22 @@
   &--cities {
     margin-top: 20px;
     background-color: rgb(209, 255, 219);
+  }
+
+  &--name {
+    display: flex;
+    background-color: cornsilk;
+    width: 90%;
+    font-size: 14px;
+    align-items: center;
+  }
+
+  &--item {
+    width: 90%;
+  }
+
+  &--name > * {
+    flex: 1 1;
+    text-align: center;
   }
 }

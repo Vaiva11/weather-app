@@ -14,16 +14,15 @@ header {
 
     li {
       margin: 0 20px 0 20px;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       color: rgb(255, 255, 255);
 
-      a{
+      a {
         text-decoration: none;
         transition: color 0.2s linear;
         color: rgb(255, 255, 255);
         font-weight: bold;
         position: relative;
-      
 
         &.active {
           &::after {
@@ -44,7 +43,6 @@ header {
       a:hover:after {
         width: 100%;
       }
-
     }
   }
 }

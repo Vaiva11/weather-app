@@ -12,12 +12,16 @@ class App extends React.Component {
       error: null,
       selectedOption: null,
       cities: {},
-      isLoaded: false
+      favCities: []
     };
   }
 
   //getting countries and setting localStorage
   componentDidMount() {
+    //getting from localStorage
+    let data = localStorage.getItem("favCities");
+    this.setState({ favCities: data ? JSON.parse(data) : [] });
+
     //getting countries
     fetch("http://api.geonames.org/countryInfoJSON?username=spidee")
       .then(response => response.json())
@@ -30,57 +34,42 @@ class App extends React.Component {
         this.setState({ countries });
       })
       .catch(() => this.setState({ error: "Something went wrong" }));
-
-    //getting from localStorage
-
-    let data = "";
-    if (this.state.isLoaded) {
-      data = localStorage.getItem("favCities");
-    }
-    let favCities = data ? JSON.parse(data) : [];
-
-    let st = this.state;
-
-    Object.keys(st.cities).forEach(key => {
-      st.cities[key].isFavorite = false;
-    });
-
-    favCities.map(key => {
-      let data = st.cities[key];
-      if (data) {
-        data.isFavorite = true;
-      }
-    });
-
-    this.setState(st);
   }
 
   toggleFavorite = name => {
-    let st = this.state;
-    let city = st.cities[name];
+    const { cities } = this.state;
+    let { favCities } = this.state;
 
+    let city = cities[name];
     if (city) {
-      city.isFavorite = !city.isFavorite;
+      let countryCode = city.countryCode;
+
+      let wasDeleted = false;
+      for (let index = 0; index < favCities.length; index++) {
+        if (
+          favCities[index].name === name &&
+          favCities[index].countryCode === countryCode
+        ) {
+          favCities.splice(index, 1);
+          wasDeleted = true;
+          break;
+        }
+      }
+
+      if (!wasDeleted) {
+        favCities.push({ name, countryCode });
+      }
     }
 
-    this.setState(st);
+    this.setState(favCities);
   };
 
   //setting localStorage
   componentWillUpdate(nextProps, nextState) {
-    let favCities = [];
-    Object.keys(this.state.cities).forEach(key => {
-      let value = this.state.cities[key];
-
-      if (value.isFavorite) {
-        favCities.push(key);
-      }
-    });
-
-    localStorage.setItem("favCities", JSON.stringify(favCities));
+    localStorage.setItem("favCities", JSON.stringify(this.state.favCities));
   }
 
-  //getting cities
+  //getting cities and temperature
   callbackFunction = childData => {
     this.setState({ selectedOption: childData });
 
@@ -94,7 +83,6 @@ class App extends React.Component {
       .then(json => {
         let cities = {};
         let tempLinks = [];
-        this.setState({ isLoaded: true });
         json["geonames"].forEach(city => {
           if (
             city.fcode === "PPL" ||
@@ -111,10 +99,11 @@ class App extends React.Component {
               isFavorite: false
             };
 
+            //fetching temperature
             tempLinks.push(
-              `api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${
-                city.lng
-              }&appid=48e0a2181dd86eda5cce3dccb60d7805`
+              `http://api.openweathermap.org/data/2.5/weather?lat=${
+                city.lat
+              }&lon=${city.lng}&appid=48e0a2181dd86eda5cce3dccb60d7805`
             );
           }
         });
@@ -123,33 +112,40 @@ class App extends React.Component {
 
         const promises = link =>
           fetch(link)
-            .then(res => res.text())
-            .then(res => console.log(res))
+            .then(res => res.json())
+            .then(res => console.log(res.main.temp))
             .catch(res => console.log(res));
 
         return Promise.all(tempLinks.map(promises));
       })
+      .then(res => console.log("done"))
       .catch(res => console.log(res));
   };
 
   renderHome = () => {
-    const { cities } = this.state;
-    const { countries } = this.state;
+    const { cities, countries, favCities } = this.state;
 
     return (
       <Home
         cities={cities}
         toggleFavorite={this.toggleFavorite}
         countries={countries}
+        favCities={favCities}
         parentCallback={this.callbackFunction}
       />
     );
   };
 
   renderFavorites = () => {
-    const { cities } = this.state;
-
-    return <Favorites cities={cities} toggleFavorite={this.toggleFavorite} />;
+    const { cities, favCities, selectedOption } = this.state;
+    return (
+      <Favorites
+        cities={cities}
+        favCities={favCities}
+        selectedOption={selectedOption}
+        toggleFavorite={this.toggleFavorite}
+      />
+    );
   };
 
   render() {

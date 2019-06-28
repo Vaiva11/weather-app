@@ -1,5 +1,23 @@
 .cityCard {
   display: flex;
-  width: 80vw;
+  width: 100%;
   justify-content: space-between;
+  font-size: 14px;
+  border-top: solid rgb(190, 190, 190) 1px;
+
+  &--favorite {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+// .cityCard:hover {
+//   background-color: rgb(233, 233, 233);
+// }
+
+.cityCard > * {
+  flex: 1 1;
+  text-align: center;
 }

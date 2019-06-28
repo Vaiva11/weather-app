@@ -5,10 +5,16 @@ import "./index.scss";
 function CityCard({ name, toggleFavorite, isFavorite }) {
   return (
     <div className="cityCard">
-      <p>City: {name}</p>
+      <p>{name}</p>
+      <p>pic</p>
+      <p>20C</p>
       <p>
-        <button type="button" onClick={() => toggleFavorite(name)}>
-          {isFavorite ? "💔" : "💖"}
+        <button
+          type="button"
+          className="cityCard--favorite"
+          onClick={() => toggleFavorite(name)}
+        >
+          {isFavorite ? "❌ " : "❤️"}
         </button>
       </p>
     </div>
@@ -17,7 +23,6 @@ function CityCard({ name, toggleFavorite, isFavorite }) {
 
 CityCard.propTypes = {
   name: PropTypes.string.isRequired,
-  temperature: PropTypes.number.isRequired,
   isFavorite: PropTypes.bool.isRequired,
   toggleFavorite: PropTypes.func.isRequired
 };
