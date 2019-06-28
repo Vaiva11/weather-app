@@ -4,7 +4,7 @@ import "./index.scss";
 
 function CityCard({ name, icon, temperature, toggleFavorite, isFavorite }) {
   let iconImg = "";
-  let tempImg = temperature ? temperature : "―";
+  let tempImg = temperature ? temperature + "°C" : "―";
 
   if (icon !== undefined) {
     switch (icon) {

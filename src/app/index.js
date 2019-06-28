@@ -113,7 +113,7 @@ class App extends React.Component {
             .then(res => res.json())
             .then(res => {
               Object.assign(cities[res.name], {
-                temperature: Math.round(res.main.temp - 273) + "°C",
+                temperature: Math.round(res.main.temp - 273),
                 icon: res.weather[0].icon
               });
 
