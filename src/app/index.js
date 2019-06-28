@@ -43,6 +43,9 @@ class App extends React.Component {
     let city = cities[name];
     if (city) {
       let countryCode = city.countryCode;
+      let isFavorite = city.isFavorite;
+      let temperature = city.temperature;
+      let icon = city.icon;
 
       let wasDeleted = false;
       for (let index = 0; index < favCities.length; index++) {
@@ -50,6 +53,10 @@ class App extends React.Component {
           favCities[index].name === name &&
           favCities[index].countryCode === countryCode
         ) {
+          Object.assign(favCities, {
+            temperature: city.temperature
+          });
+
           favCities.splice(index, 1);
           wasDeleted = true;
           break;
@@ -57,7 +64,7 @@ class App extends React.Component {
       }
 
       if (!wasDeleted) {
-        favCities.push({ name, countryCode });
+        favCities.push({ name, countryCode, temperature, icon });
       }
     }
 
@@ -144,14 +151,9 @@ class App extends React.Component {
   };
 
   renderFavorites = () => {
-    const { cities, favCities, selectedOption } = this.state;
+    const { favCities } = this.state;
     return (
-      <Favorites
-        cities={cities}
-        favCities={favCities}
-        selectedOption={selectedOption}
-        toggleFavorite={this.toggleFavorite}
-      />
+      <Favorites favCities={favCities} toggleFavorite={this.toggleFavorite} />
     );
   };
 

@@ -2,24 +2,22 @@ import React from "react";
 import "./index.scss";
 import { CityCard } from "../../components";
 
-function Favorites({ cities, favCities, selectedOption, toggleFavorite }) {
+function Favorites({ favCities, toggleFavorite }) {
   const cards = [];
-  const countryCode = selectedOption ? selectedOption.value : "";
+  console.log(favCities);
+
   favCities.map(city => {
-    if (countryCode === city.countryCode) {
-      let value = cities[city.name];
-      if (value) {
-        cards.push(
-          <CityCard
-            key={city.name} //kas nebutu error
-            name={city.name}
-            {...value}
-            isFavorite={true}
-            toggleFavorite={toggleFavorite}
-          />
-        );
-      }
-    }
+    cards.push(
+      <CityCard
+        key={city.name} //kas nebutu error
+        name={city.name + ", " + city.countryCode}
+        icon={city.icon}
+        temperature={city.temperature}
+        isFavorite={true}
+        toggleFavorite={toggleFavorite}
+      />
+    );
+
     return "";
   });
 
