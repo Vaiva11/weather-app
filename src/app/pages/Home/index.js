@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.scss";
 import Select from "react-select";
-import { CityCard } from "../../components";
+import { CityCard, MapContainer } from "../../components";
 
 class Home extends React.Component {
   constructor(props) {
@@ -10,7 +10,9 @@ class Home extends React.Component {
       cities: {},
       countries: [],
       toggleFavorite: false,
-      selectedOption: null
+      selectedOption: null,
+      mineLat: null,
+      mineLng: null
     };
   }
 
@@ -87,7 +89,9 @@ class Home extends React.Component {
             className="selector"
           />
         </div>
-        <div className="home--map">MAP</div>
+        <div className="home--map">
+          <MapContainer />
+        </div>
         {nameList}
         <div className="home--item">{cards}</div>
       </div>

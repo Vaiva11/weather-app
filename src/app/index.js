@@ -43,7 +43,6 @@ class App extends React.Component {
     let city = cities[name];
     if (city) {
       let countryCode = city.countryCode;
-      let isFavorite = city.isFavorite;
       let temperature = city.temperature;
       let icon = city.icon;
 
