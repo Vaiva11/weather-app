@@ -30,7 +30,7 @@ function Favorites({ favCities, toggleFavorite }) {
         <p>Remove from favorites</p>
       </div>
     ) : (
-      <p>You do not have any favorite cities</p>
+      <p className="empty">You do not have any favorite cities</p>
     );
 
   return (
