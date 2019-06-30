@@ -35,11 +35,20 @@ export class MapContainer extends Component {
     const { cities } = this.props;
 
     let markers = [];
+    let left = 180;
+    let right = -180;
+    let top = -180;
+    let bottom = 180;
 
     Object.keys(cities).forEach((i, index) => {
       let value = cities[i];
 
       if (value.icon) {
+        left = left > value.lng ? value.lng : left;
+        right = right < value.lng ? value.lng : right;
+        top = top < value.lat ? value.lat : top;
+        bottom = bottom > value.lat ? value.lat : bottom;
+
         markers.push(
           <Marker
             position={{ lat: value.lat, lng: value.lng }}
@@ -54,16 +63,20 @@ export class MapContainer extends Component {
       }
     });
 
+    //console.log(`Left:${left} Right:${right} Top:${top} Bottom:${bottom}`);
+    let bounds = new this.props.google.maps.LatLngBounds();
+    bounds.extend({ lat: parseFloat(top), lng: parseFloat(left) });
+    bounds.extend({ lat: parseFloat(bottom), lng: parseFloat(left) });
+    bounds.extend({ lat: parseFloat(top), lng: parseFloat(right) });
+    bounds.extend({ lat: parseFloat(bottom), lng: parseFloat(right) });
+
     const { mineLat, mineLng } = this.state;
     this.getLocation();
     let map = (
       <Map
         google={this.props.google}
-        zoom={5}
-        initialCenter={{
-          lat: mineLat,
-          lng: mineLng
-        }}
+        initialCenter={{ lat: mineLat, lng: mineLng }}
+        bounds={bounds}
       >
         {markers}
       </Map>
