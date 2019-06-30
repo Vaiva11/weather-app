@@ -4,13 +4,13 @@ import { CityCard } from "../../components";
 
 function Favorites({ favCities, toggleFavorite }) {
   const cards = [];
-  console.log(favCities);
 
   favCities.map(city => {
     cards.push(
       <CityCard
         key={city.name} //kad nebutu error
-        name={city.name + ", " + city.countryCode}
+        name={city.name}
+        title={city.name + ", " + city.countryCode}
         icon={city.icon}
         temperature={city.temperature}
         isFavorite={true}

@@ -55,6 +55,7 @@ class Home extends React.Component {
         <CityCard
           key={key} //kas nebutu error
           name={key}
+          title={key}
           {...value}
           isFavorite={isFavorite}
           toggleFavorite={toggleFavorite}
@@ -92,7 +93,7 @@ class Home extends React.Component {
 
         <div className="homeInline">
           <div className="homeInline--map">
-            <MapContainer />
+            <MapContainer cities={cities} />
           </div>
 
           <div className="homeInline--item">

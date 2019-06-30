@@ -4,6 +4,16 @@
   justify-content: space-between;
   font-size: 14px;
   border-top: solid rgb(190, 190, 190) 1px;
+  align-items: center;
+
+  .icon {
+    display: flex;
+    justify-content: center;
+
+    &--class {
+      width: 50px;
+    }
+  }
 
   &--favorite {
     padding: 0;

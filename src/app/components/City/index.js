@@ -2,59 +2,33 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 
-function CityCard({ name, icon, temperature, toggleFavorite, isFavorite }) {
+function CityCard({
+  name,
+  title,
+  icon,
+  temperature,
+  toggleFavorite,
+  isFavorite
+}) {
   let iconImg = "";
   let tempImg = temperature ? temperature + "°C" : "―";
 
   if (icon !== undefined) {
-    switch (icon) {
-      case "01d":
-        iconImg = "☀️";
-        break;
-
-      case "02d":
-      case "02n":
-      case "03d":
-      case "04d":
-      case "50d":
-      case "03n":
-      case "04n":
-      case "50n":
-        iconImg = "☁️ ";
-        break;
-
-      case "09d":
-      case "10d":
-      case "09n":
-      case "10n":
-        iconImg = "💧 ";
-        break;
-
-      case "11d":
-      case "11n":
-        iconImg = "⚡️";
-        break;
-
-      case "13d":
-      case "13n":
-        iconImg = "❄️";
-        break;
-
-      case "01n":
-        iconImg = "🌙";
-        break;
-
-      default:
-        iconImg = "";
-    }
+    iconImg = (
+      <img
+        className="icon--class"
+        src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
+        alt="weather"
+      />
+    );
   } else {
     iconImg = "―";
   }
 
   return (
     <div className="cityCard">
-      <p>{name}</p>
-      <p>{iconImg}</p>
+      <p>{title}</p>
+      <p className="icon">{iconImg}</p>
       <p>{tempImg}</p>
       <p>
         <button

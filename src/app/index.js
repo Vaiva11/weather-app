@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Home, Favorites } from "./pages";
-import { Header, Footer } from "./components";
+import { Header, Footer, MapContainer } from "./components";
 import "./index.scss";
 
 class App extends React.Component {
@@ -131,7 +131,6 @@ class App extends React.Component {
 
         return Promise.all(tempLinks.map(promises));
       })
-      .then(res => console.log("good"))
       .catch(res => console.log("error"));
   };
 
