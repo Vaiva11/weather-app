@@ -23,57 +23,93 @@
     }
   }
 
-  &--map {
-    width: 300px;
-    position: relative;
-    background-color: rgb(228, 210, 210);
-    height: 200px;
-    margin-top: 20px;
-  }
-
-  &--name {
+  .homeInline {
+    width: 80%;
     display: flex;
-    background-color: cornsilk;
-    margin-top: 20px;
-    width: 90%;
-    font-size: 14px;
+    flex-direction: column;
     align-items: center;
-  }
 
-  &--item {
-    width: 90%;
-  }
+    &--map {
+      width: 90%;
+      position: relative;
+      height: 200px;
+      margin-top: 20px;
+    }
 
-  &--name > * {
-    flex: 1 1;
-    text-align: center;
+    &--item {
+      width: 100%;
+      .cardsName {
+        display: flex;
+        background-color: cornsilk;
+        margin-top: 20px;
+        font-size: 14px;
+        align-items: center;
+      }
+      .cardsName > * {
+        flex: 1 1;
+        text-align: center;
+      }
+    }
   }
 }
 
-@media screen and (min-width: 450px) and (max-width: 1024px) {
+@media screen and (min-width: 450px) and (max-width: 1025px) {
   .home {
     &--list {
       margin-top: 30px;
       margin-bottom: 30px;
       h1 {
         margin: 50px;
-        font-size: 40px;
+        font-size: 30px;
       }
       .selector {
         width: 60%;
       }
     }
 
-    &--map {
-      width: 600px;
-      height: 400px;
-      margin: 50px 0 50px 0;
-    }
+    .homeInline {
+      &--map {
+        margin: 50px 0 50px 0;
+        width: 80%;
+        height: 350px;
+      }
 
-    &--name,
-    &--item {
-      width: 80%;
-      font-size: 20px;
+      &--name,
+      &--item {
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .home {
+    .selector {
+      width: 40%;
+    }
+    .homeInline {
+      display: flex;
+      width: 90%;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      .emptyCities {
+        width: 0%;
+      }
+
+      &--map {
+        margin-right: 20px;
+        height: 400px;
+      }
+
+      &--item {
+        margin-left: 20px;
+        margin-right: 20px;
+        .cardsName {
+          font-size: 20px;
+        }
+      }
     }
   }
 }

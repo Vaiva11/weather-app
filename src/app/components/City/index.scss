@@ -19,12 +19,23 @@
   text-align: center;
 }
 
-@media screen and (min-width: 450px) and (max-width: 1024px) {
+@media screen and (min-width: 450px) and (max-width: 1025px) {
   .cityCard {
     font-size: 20px;
 
     &--favorite {
       font-size: 20px;
+    }
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .cityCard {
+    font-size: 18px;
+    width: 100%;
+
+    &--favorite {
+      font-size: 18px;
     }
   }
 }

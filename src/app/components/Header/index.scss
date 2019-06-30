@@ -14,7 +14,7 @@ header {
 
     li {
       margin: 0 20px 0 20px;
-      font-size: 1.3rem;
+      font-size: 20px;
       color: rgb(255, 255, 255);
 
       a {
@@ -37,7 +37,7 @@ header {
         bottom: 0;
         left: 0;
         width: 0;
-        border-bottom: 5px solid rgb(255, 255, 255);
+        border-bottom: 4px solid rgb(255, 255, 255);
         transition: 0.4s;
       }
       a:hover:after {
@@ -47,12 +47,22 @@ header {
   }
 }
 
-@media screen and (min-width: 450px) and (max-width: 1024px) {
+@media screen and (min-width: 450px) and (max-width: 1025px) {
   header {
     min-height: 150px;
     a {
-      font-size: 2.3rem;
+      font-size: 30px;
       margin: 0 50px 0 50px;
+    }
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  header {
+    min-height: 100px;
+    a {
+      font-size: 25px;
+      margin: 0 100px 0 100px;
     }
   }
 }

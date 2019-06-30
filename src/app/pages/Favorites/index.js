@@ -23,7 +23,7 @@ function Favorites({ favCities, toggleFavorite }) {
 
   const nameList =
     cards.length !== 0 ? (
-      <div className="home--name">
+      <div className="cardsName">
         <p>City</p>
         <p>Weather</p>
         <p>Celsius</p>
@@ -36,7 +36,11 @@ function Favorites({ favCities, toggleFavorite }) {
   return (
     <div className="favorites">
       {nameList}
-      <div className="home--item">{cards}</div>
+      <div className="home">
+        <div className="homeInline">
+          <div className="homeInline--item">{cards}</div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -67,14 +67,14 @@ class Home extends React.Component {
 
     const nameList =
       cards.length !== 0 ? (
-        <div className="home--name">
+        <div className="cardsName">
           <p>City</p>
           <p>Weather</p>
           <p>Celsius</p>
           <p>Add to favorites</p>
         </div>
       ) : (
-        <span />
+        <p>You did not chose any country</p>
       );
 
     //rendering
@@ -89,11 +89,17 @@ class Home extends React.Component {
             className="selector"
           />
         </div>
-        <div className="home--map">
-          <MapContainer />
+
+        <div className="homeInline">
+          <div className="homeInline--map">
+            <MapContainer />
+          </div>
+
+          <div className="homeInline--item">
+            {nameList}
+            {cards}
+          </div>
         </div>
-        {nameList}
-        <div className="home--item">{cards}</div>
       </div>
     );
   };
