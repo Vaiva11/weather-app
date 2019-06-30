@@ -5,31 +5,52 @@ import "./index.scss";
 export class MapContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      mineLat: null,
-      mineLng: null
-    };
+    this.state = {};
   }
 
   getLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.showPosition);
-    } else {
-      this.setState({ mineLat: 51.5074 }); //London
-      this.setState({ mineLng: 0.1278 });
-      console.log("Geolocation is not supported by this browser.");
-    }
-  };
-
-  handleChange = selectedOption => {
-    this.setState({ selectedOption });
-    this.props.parentCallback(selectedOption);
+    navigator.geolocation.getCurrentPosition(this.showPosition);
   };
 
   showPosition = position => {
-    this.setState({ mineLat: position.coords.latitude });
-    this.setState({ mineLng: position.coords.longitude });
+    fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${
+        position.coords.latitude
+      },${
+        position.coords.longitude
+      }1&key=AIzaSyBnxtc9KFJvG1vzPxh55D3Rs5SXHEypnKU`
+    )
+      .then(res => res.json())
+      .then(data => {
+        if (!data || !data.results) {
+          return;
+        }
+
+        data.results.map(component => {
+          let addresses = component.address_components;
+          if (!addresses) {
+            return null;
+          }
+
+          return addresses.map(address => {
+            if (address.long_name && address.types && address.short_name) {
+              if (address.types.indexOf("country") > -1) {
+                this.props.parentCallback(
+                  address.long_name,
+                  address.short_name
+                );
+              }
+            }
+
+            return null;
+          });
+        });
+      });
   };
+
+  componentDidMount() {
+    this.getLocation();
+  }
 
   render() {
     const { cities } = this.props;
@@ -63,21 +84,14 @@ export class MapContainer extends Component {
       }
     });
 
-    //console.log(`Left:${left} Right:${right} Top:${top} Bottom:${bottom}`);
     let bounds = new this.props.google.maps.LatLngBounds();
     bounds.extend({ lat: parseFloat(top), lng: parseFloat(left) });
     bounds.extend({ lat: parseFloat(bottom), lng: parseFloat(left) });
     bounds.extend({ lat: parseFloat(top), lng: parseFloat(right) });
     bounds.extend({ lat: parseFloat(bottom), lng: parseFloat(right) });
 
-    const { mineLat, mineLng } = this.state;
-    this.getLocation();
     let map = (
-      <Map
-        google={this.props.google}
-        initialCenter={{ lat: mineLat, lng: mineLng }}
-        bounds={bounds}
-      >
+      <Map google={this.props.google} bounds={bounds}>
         {markers}
       </Map>
     );

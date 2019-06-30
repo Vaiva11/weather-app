@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Home, Favorites } from "./pages";
-import { Header, Footer, MapContainer } from "./components";
+import { Header, Footer } from "./components";
 import "./index.scss";
 
 class App extends React.Component {
@@ -36,35 +36,28 @@ class App extends React.Component {
       .catch(() => this.setState({ error: "Something went wrong" }));
   }
 
-  toggleFavorite = name => {
+  toggleFavorite = (name, code) => {
     const { cities } = this.state;
     let { favCities } = this.state;
 
     let city = cities[name];
-    if (city) {
-      let countryCode = city.countryCode;
-      let temperature = city.temperature;
-      let icon = city.icon;
+    let icon = city ? city.icon : null;
+    let temperature = city ? city.temperature : null;
 
-      let wasDeleted = false;
-      for (let index = 0; index < favCities.length; index++) {
-        if (
-          favCities[index].name === name &&
-          favCities[index].countryCode === countryCode
-        ) {
-          Object.assign(favCities, {
-            temperature: city.temperature
-          });
-
-          favCities.splice(index, 1);
-          wasDeleted = true;
-          break;
-        }
+    let wasDeleted = false;
+    for (let index = 0; index < favCities.length; index++) {
+      if (
+        favCities[index].name === name &&
+        favCities[index].countryCode === code
+      ) {
+        favCities.splice(index, 1);
+        wasDeleted = true;
+        break;
       }
+    }
 
-      if (!wasDeleted) {
-        favCities.push({ name, countryCode, temperature, icon });
-      }
+    if (!wasDeleted) {
+      favCities.push({ name, countryCode: code, temperature, icon });
     }
 
     this.setState(favCities);
@@ -78,6 +71,7 @@ class App extends React.Component {
   //getting cities and temperature
   callbackFunction = childData => {
     this.setState({ selectedOption: childData });
+    let cities = {};
 
     //fetch cities
     fetch(
@@ -87,7 +81,6 @@ class App extends React.Component {
     )
       .then(response => response.json())
       .then(json => {
-        let cities = {};
         let tempLinks = [];
         json.geonames.forEach(city => {
           if (
@@ -109,7 +102,7 @@ class App extends React.Component {
             tempLinks.push(
               `http://api.openweathermap.org/data/2.5/weather?lat=${
                 city.lat
-              }&lon=${city.lng}&appid=48e0a2181dd86eda5cce3dccb60d7805`
+              }&lon=${city.lng}&appid=aa93edde7a9534f17b79612d2eaf7060`
             ); //klp
           }
         });
@@ -122,16 +115,13 @@ class App extends React.Component {
                 temperature: Math.round(res.main.temp - 273),
                 icon: res.weather[0].icon
               });
-
-              this.setState({ cities }); //kur geresne vieta?
             })
-            .catch(notFound => {
-              this.setState({ error: notFound });
-            });
+            .catch(err => {});
 
         return Promise.all(tempLinks.map(promises));
       })
-      .catch(res => console.log("error"));
+      .then(res => this.setState({ cities }))
+      .catch(res => console.log("error: " + res));
   };
 
   renderHome = () => {

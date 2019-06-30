@@ -4,6 +4,7 @@ import "./index.scss";
 
 function CityCard({
   name,
+  code,
   title,
   icon,
   temperature,
@@ -34,7 +35,7 @@ function CityCard({
         <button
           type="button"
           className="cityCard--favorite"
-          onClick={() => toggleFavorite(name)}
+          onClick={() => toggleFavorite(name, code)}
         >
           {isFavorite ? "❌ " : "❤️"}
         </button>

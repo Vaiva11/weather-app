@@ -10,6 +10,7 @@ function Favorites({ favCities, toggleFavorite }) {
       <CityCard
         key={city.name} //kad nebutu error
         name={city.name}
+        code={city.countryCode}
         title={city.name + ", " + city.countryCode}
         icon={city.icon}
         temperature={city.temperature}

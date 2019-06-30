@@ -11,14 +11,26 @@ class Home extends React.Component {
       countries: [],
       toggleFavorite: false,
       selectedOption: null,
-      mineLat: null,
-      mineLng: null
+      country: ""
     };
   }
 
+  //perduoda app.js selected option
   handleChange = selectedOption => {
     this.setState({ selectedOption });
+
     this.props.parentCallback(selectedOption);
+  };
+
+  //gauna is map.js esamos lokacijos sali
+
+  callbackFunction = (country, countryCode) => {
+    if (this.state.country === country) {
+      return;
+    }
+    this.setState({ country: country });
+    this.setState({ countryCode: country });
+    this.handleChange({ label: country, value: countryCode });
   };
 
   render = () => {
@@ -53,8 +65,9 @@ class Home extends React.Component {
 
       cards.push(
         <CityCard
-          key={key} //kas nebutu error
+          key={key} //kad nebutu error
           name={key}
+          code={selectedOption ? selectedOption.value : null}
           title={key}
           {...value}
           isFavorite={isFavorite}
@@ -78,6 +91,8 @@ class Home extends React.Component {
         <p>You did not chose any country</p>
       );
 
+    let select = selectedOption ? selectedOption.label : this.state.country;
+
     //rendering
     return (
       <div className="home">
@@ -85,7 +100,7 @@ class Home extends React.Component {
           <h1>Choose country</h1>
           <Select
             options={countriesOptions.sort()}
-            value={selectedOption}
+            value={countriesOptions.filter(option => option.label === select)}
             onChange={this.handleChange}
             className="selector"
           />
@@ -93,7 +108,10 @@ class Home extends React.Component {
 
         <div className="homeInline">
           <div className="homeInline--map">
-            <MapContainer cities={cities} />
+            <MapContainer
+              cities={cities}
+              parentCallback={this.callbackFunction}
+            />
           </div>
 
           <div className="homeInline--item">
