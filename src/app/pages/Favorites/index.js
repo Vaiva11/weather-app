@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./index.scss";
 import { CityCard } from "../../components";
 
@@ -47,7 +48,20 @@ function Favorites({ favCities, toggleFavorite }) {
 }
 
 Favorites.defaultProps = {
-  cities: {}
+  favCities: {}
+};
+
+Favorites.propTypes = {
+  favCities: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      code: PropTypes.string,
+      icon: PropTypes.string,
+      temperature: PropTypes.number,
+      isFavorite: PropTypes.bool
+    })
+  ),
+  toggleFavorite: PropTypes.func.isRequired
 };
 
 export default Favorites;

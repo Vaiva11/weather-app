@@ -72,6 +72,7 @@ export class MapContainer extends Component {
 
         markers.push(
           <Marker
+            key={value.lat}
             position={{ lat: value.lat, lng: value.lng }}
             options={{
               icon: {

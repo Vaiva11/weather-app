@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./index.scss";
 import Select from "react-select";
 import { CityCard, MapContainer } from "../../components";
@@ -123,5 +124,16 @@ class Home extends React.Component {
     );
   };
 }
+
+Home.propTypes = {
+  favCities: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      code: PropTypes.string
+    })
+  ),
+  parentCallback: PropTypes.func.isRequired,
+  toggleFavorite: PropTypes.func.isRequired
+};
 
 export default Home;

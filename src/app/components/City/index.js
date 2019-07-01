@@ -45,6 +45,8 @@ function CityCard({
 }
 
 CityCard.propTypes = {
+  code: PropTypes.string,
+  title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   isFavorite: PropTypes.bool.isRequired,
   toggleFavorite: PropTypes.func.isRequired
