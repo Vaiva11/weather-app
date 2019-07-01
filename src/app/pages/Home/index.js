@@ -16,14 +16,11 @@ class Home extends React.Component {
     };
   }
 
-  //perduoda app.js selected option
   handleChange = selectedOption => {
     this.setState({ selectedOption });
 
     this.props.parentCallback(selectedOption);
   };
-
-  //gauna is map.js esamos lokacijos sali
 
   callbackFunction = (country, countryCode) => {
     if (this.state.country === country) {
@@ -41,7 +38,6 @@ class Home extends React.Component {
     const cards = [];
     let countriesOptions = [];
 
-    //makes select countries
     Object.keys(countries).forEach((i, index) => {
       countriesOptions.push({
         label: i,
@@ -49,7 +45,6 @@ class Home extends React.Component {
       });
     });
 
-    //makes cities
     Object.keys(cities).forEach(key => {
       let value = cities[key];
 
@@ -66,7 +61,7 @@ class Home extends React.Component {
 
       cards.push(
         <CityCard
-          key={key} //kad nebutu error
+          key={key}
           name={key}
           code={selectedOption ? selectedOption.value : null}
           title={key}
@@ -77,7 +72,6 @@ class Home extends React.Component {
       );
     });
 
-    //makes list alphabetic
     countriesOptions.sort((a, b) => (a.label > b.label ? 1 : -1));
 
     const nameList =
@@ -94,7 +88,6 @@ class Home extends React.Component {
 
     let select = selectedOption ? selectedOption.label : this.state.country;
 
-    //rendering
     return (
       <div className="home">
         <div className="home--list">

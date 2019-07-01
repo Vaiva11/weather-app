@@ -16,13 +16,10 @@ class App extends React.Component {
     };
   }
 
-  //getting countries and setting localStorage
   componentDidMount() {
-    //getting from localStorage
     let data = localStorage.getItem("favCities");
     this.setState({ favCities: data ? JSON.parse(data) : [] });
 
-    //getting countries
     fetch("http://api.geonames.org/countryInfoJSON?username=spidee")
       .then(response => response.json())
       .then(json => {
@@ -63,17 +60,14 @@ class App extends React.Component {
     this.setState(favCities);
   };
 
-  //setting localStorage
   componentWillUpdate(nextProps, nextState) {
     localStorage.setItem("favCities", JSON.stringify(this.state.favCities));
   }
 
-  //getting cities and temperature
   callbackFunction = childData => {
     this.setState({ selectedOption: childData });
     let cities = {};
 
-    //fetch cities
     fetch(
       `http://api.geonames.org/searchJSON?username=spidee&country=${
         childData.value
@@ -98,12 +92,11 @@ class App extends React.Component {
               isFavorite: false
             };
 
-            //fetching temperature
             tempLinks.push(
               `http://api.openweathermap.org/data/2.5/weather?lat=${
                 city.lat
               }&lon=${city.lng}&appid=aa93edde7a9534f17b79612d2eaf7060`
-            ); //klp
+            );
           }
         });
 

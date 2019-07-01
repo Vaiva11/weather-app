@@ -9,7 +9,7 @@ function Favorites({ favCities, toggleFavorite }) {
   favCities.map(city => {
     cards.push(
       <CityCard
-        key={city.name} //kad nebutu error
+        key={city.name}
         name={city.name}
         code={city.countryCode}
         title={city.name + ", " + city.countryCode}
